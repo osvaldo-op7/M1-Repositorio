@@ -116,15 +116,12 @@ HashTable.prototype.hash = function(input){
   
 HashTable.prototype.set = function(clave, valor){
   if(typeof clave === 'string'){
-    if(this.bucket[this.hash(clave)]){
-      if(this.hasKey(clave)){
-        this.bucket[this.hash(clave)] = { [clave]: valor};
-      }else{
-        this.bucket[this.hash(clave)][1] = { [clave]: valor};
-      }
-    }else{
-    this.bucket[this.hash(clave)] = { [clave]: valor};
-    }
+   if(!this.bucket[this.hash(clave)]){
+    this.bucket[this.hash(clave)] = {}
+    this.bucket[this.hash(clave)][clave] = valor;
+   }else{
+    this.bucket[this.hash(clave)][clave] = valor; 
+   }
   }
   else{
     throw new TypeError
@@ -136,7 +133,7 @@ HashTable.prototype.get = function(clave){
   return this.bucket[this.hash(clave)][clave];
 }
 HashTable.prototype.hasKey = function(clave){
-  let arr = Object.keys(this.bucket[this.hash(clave)])
+  let arr = Object.keys(this.bucket[this.hash(clave)]).toString();
   if(arr == clave){
     return true;
   } else {
